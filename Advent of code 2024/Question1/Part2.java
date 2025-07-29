@@ -5,6 +5,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,8 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
-public class C {
+public class Part2 {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
@@ -56,43 +58,45 @@ public class C {
         System.out.print(o + " ");
     }
 
+    static final int N = 1000;
+
     public static void main(String[] args) throws IOException {
         FastReader fr = new FastReader();
-        int N = fr.nextInt();
-        int K = fr.nextInt();
-        int X = fr.nextInt();
-        String[] S = new String[N];
-        List<String> result = new ArrayList<>();
+        PrintWriter out = new PrintWriter(System.out);
 
-         for (int i = 0; i < N; i++) {
-            S[i] = fr.next();
+        List<Integer> arrA = new ArrayList<>();
+        List<Integer> arrB = new ArrayList<>();
+
+        for(int i = 0; i < N; i++) {
+            int a = fr.nextInt();
+            int b = fr.nextInt();
+
+            arrA.add(a);
+            arrB.add(b);
         }
 
-        generateString(new ArrayList<>(), 0, N, K, S, result);
+        Map<Integer, Integer> map = new HashMap<>();
 
-        Collections.sort(result);
-        logn(result.get(X - 1));
-    }
-
-    private static void generateString(List<Integer> current, int depth, int N, int K, String[] S, List<String> result) {
-        if (depth == K) {
-            StringBuilder sb = new StringBuilder();
-            for (int idx : current) {
-                sb.append(S[idx]);
-            }
-            result.add(sb.toString());
-            return;
+        for(int it: arrB) {
+            map.put(it, map.getOrDefault(it,0)+1);
         }
 
-        for (int i = 0; i < N; i++) {
-            current.add(i);
-            generateString(current, depth + 1, N, K, S, result);
-            current.remove(current.size() - 1);
+        // for(Map.Entry<Integer, Integer> entry: map.entrySet()) {
+        //     out.println(entry.getKey() + "->" + entry.getValue());
+        // }
+
+        long sum = 0;
+        for(int i = 0; i < N; i++) {
+            sum += map.getOrDefault(arrA.get(i), 0) * arrA.get(i);
         }
+
+        out.println(sum);
+
+        out.close();
     }
 
     private static void test(FastReader fr) throws IOException {
-        
+
     }
 
 }
